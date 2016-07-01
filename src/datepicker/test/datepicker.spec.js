@@ -47,6 +47,10 @@ describe('datepicker', function() {
       scope: {selectedDate: new Date()},
       element: '<input id="datepicker1" type="text" ng-model="selectedDate" bs-datepicker>'
     },
+    'default-getterSetter': {
+      scope: {selectedDate: function () {}},
+      element: '<input type="text" ng-model="selectedDate" ng-model-options="{ getterSetter: true }" bs-datepicker>'
+    },
     'value-past': {
       scope: {selectedDate: new Date(1986, 1, 22)},
       element: '<input type="text" ng-model="selectedDate" bs-datepicker>'
@@ -373,6 +377,26 @@ describe('datepicker', function() {
       expect(scope.$$childHead.$mode).toBe(0);
       angular.element(sandboxEl.find('.dropdown-menu thead button:eq(1)')[0]).triggerHandler('click');
       expect(scope.$$childHead.$mode).toBe(1);
+    });
+
+    it('should correctly change view date when model value is updated', function() {
+      var dateVal = null;
+      var elm = compileDirective('default-getterSetter', {
+        selectedDate: function (val) {
+          if (!arguments.length) {
+            return dateVal;
+          }
+          dateVal = val;
+        }
+      });
+      scope.$digest();
+      angular.element(elm[0]).triggerHandler('focus');
+      expect(sandboxEl.find('.dropdown-menu tbody tr td button.btn-primary').length).toBe(0);
+      angular.element(elm[0]).triggerHandler('blur');
+      scope.selectedDate(new Date(2014, 1, 1));
+      scope.$digest();
+      angular.element(elm[0]).triggerHandler('focus');
+      expect(sandboxEl.find('.dropdown-menu tbody tr td button.btn-primary').length).toBe(1);
     });
 
     describe('once in month view', function() {
