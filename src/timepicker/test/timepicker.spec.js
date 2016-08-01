@@ -45,6 +45,10 @@ describe('timepicker', function() {
       scope: {selectedTime: new Date()},
       element: '<input id="timepicker1" type="text" ng-model="selectedTime" bs-timepicker>'
     },
+    'default-getterSetter': {
+      scope: {selectedTime: function () {}},
+      element: '<input type="text" ng-model="selectedTime" ng-model-options="{ getterSetter: true }" bs-timepicker data-time-format="HH:mm">'
+    },
     'value-past': {
       scope: {selectedTime: new Date(1970, 0, 1, 10, 30, 42)},
       element: '<input type="text" ng-model="selectedTime" bs-timepicker>'
@@ -360,6 +364,25 @@ describe('timepicker', function() {
       expect(elm.hasClass('ng-valid')).toBe(true);
     });
 
+    it('should correctly change view time when model value is updated', function() {
+      var dateVal = null;
+      var elm = compileDirective('default-getterSetter', {
+        selectedTime: function (val) {
+          if (!arguments.length) {
+            return dateVal;
+          }
+          dateVal = val;
+        }
+      });
+      scope.$digest();
+      angular.element(elm[0]).triggerHandler('focus');
+      expect(sandboxEl.find('.dropdown-menu tbody tr td button.btn-primary').length).toBe(0);
+      angular.element(elm[0]).triggerHandler('blur');
+      scope.selectedTime(new Date(2012, 5, 15, 9, 30, 10));
+      scope.$digest();
+      angular.element(elm[0]).triggerHandler('focus');
+      expect(sandboxEl.find('.dropdown-menu tbody tr td button.btn-primary').length).toBe(2);
+    });
 
 
     // iit('should only build the timepicker once', function() {
