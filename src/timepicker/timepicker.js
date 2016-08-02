@@ -436,7 +436,12 @@ angular.module('mgcrea.ngStrap.timepicker', [
         });
 
         // Watch model for changes
-        scope.$watch(attr.ngModel, function(newValue, oldValue) {
+        scope.$watch(function () {
+          if (controller.$options && controller.$options.getterSetter) {
+            return scope.$eval(attr.ngModel)();
+          }
+          return scope.$eval(attr.ngModel);
+        }, function (newValue, oldValue) {
           // console.warn('scope.$watch(%s)', attr.ngModel, newValue, oldValue, controller.$dateValue);
           timepicker.update(controller.$dateValue);
         }, true);
