@@ -1,6 +1,6 @@
 /**
  * angular-strap
- * @version v2.2.4 - 2015-05-28
+ * @version v2.2.4 - 2016-08-02
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -250,7 +250,12 @@ angular.module('mgcrea.ngStrap.datepicker', [ 'mgcrea.ngStrap.helpers.dateParser
           validateAgainstMinMaxDate(controller.$dateValue);
         });
       });
-      scope.$watch(attr.ngModel, function(newValue, oldValue) {
+      scope.$watch(function() {
+        if (controller.$options && controller.$options.getterSetter) {
+          return scope.$eval(attr.ngModel)();
+        }
+        return scope.$eval(attr.ngModel);
+      }, function(newValue, oldValue) {
         datepicker.update(controller.$dateValue);
       }, true);
       function normalizeDateRanges(ranges) {

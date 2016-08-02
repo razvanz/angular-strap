@@ -33,7 +33,7 @@
   "dependencies": {},
   "devDependencies": {
     "del": "^1.2.0",
-    "factory-angular-channels": "^0.7.2",
+    "factory-angular-channels": "^0.10.0",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-jshint": "^1.11.0",
     "gulp-util": "^3.0.4",
@@ -45,7 +45,7 @@
     "karma-jasmine": "^0.3.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-sauce-launcher": "^0.2.11",
-    "ng-factory": "^1.0",
+    "ng-factory": "^1.1.0",
     "undertaker-lib-tasks": "^0.3.1"
   },
   "engines": {
